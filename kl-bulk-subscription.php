@@ -12,7 +12,8 @@ if( ! defined( 'ABSPATH' ) ){ exit; }
 
 $inc_files = array(
   'class-klbs-base.php',
-  'admin/admin.php'
+  'admin/admin.php',
+  'lib/lib.php'
 );
 
 foreach( $inc_files as $inc_file ){
