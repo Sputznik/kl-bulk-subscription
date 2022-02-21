@@ -19,6 +19,8 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
       //  THROW ERROR IF THE EMAIL ADDRESS DOES NOT MATCH ANY OF THE ALLOWED EMAIL DOMAINS
       if( !$this->validateEmailDomain( $email_field ) ){
         $form_data['errors']['fields'][$field_id] = 'Email domain <strong>'.$this->getEmailDomain( $email_field ).'</strong> is not valid';
+      } else{
+        $this->generateCoupon( $email_field );
       }
 
     } //FORM CHECK
@@ -42,6 +44,27 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
   // SPLIT ON @ AND RETURN LAST VALUE OF ARRAY (THE DOMAIN)
   function getEmailDomain( $email ){
     return  array_pop( explode( '@', $email ) );
+  }
+
+  // CREATE A NEW WOOCOMMERCE COUPON
+  function generateCoupon( $email ){
+
+    $coupon_code = strtoupper( substr( md5( uniqid( $email_field ) ), 0, 8 ) );
+
+    $new_coupon = array(
+      'post_title'   => $coupon_code,
+      'post_content' => '',
+      'post_status'  => 'publish',
+      'post_author'  => 1,
+      'post_type'    => 'shop_coupon'
+    );
+
+    // INSERT THE COUPON
+    $coupon_id = wp_insert_post( $new_coupon );
+
+    // UPDATE COUPON META
+    update_post_meta( $coupon_id, 'user_email_id', $email );
+
   }
 
 }
