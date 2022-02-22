@@ -8,12 +8,17 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
   // CUSTOM EMAIL VALIDATION
   function validateEmailField( $form_data ){
 
+    global $kl_customize;
+
     $form_id = $form_data['id'];
 
-    // CHECK FORM ID
-    if( $form_id == 3 ){
+  	$default_form_id = (int) $kl_customize->get_theme_option('klbs', 'nf_id', 0 );
 
-      $field_id = 12;
+    // CHECK FORM ID
+    if( $form_id == $default_form_id ){
+
+      $field_id = (int) $kl_customize->get_theme_option('klbs', 'nf_email_field_id', 0 );
+
       $email_field = $form_data['fields'][$field_id]['value'];
 
       //  THROW ERROR IF THE EMAIL ADDRESS DOES NOT MATCH ANY OF THE ALLOWED EMAIL DOMAINS
@@ -49,13 +54,17 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
   // CREATE A NEW WOOCOMMERCE COUPON
   function generateCoupon( $email ){
 
+    global $kl_customize;
+
+  	$coupon_author_id = (int) $kl_customize->get_theme_option('klbs', 'coupon_author_id', 0 );
+
     $coupon_code = strtoupper( substr( md5( uniqid( $email_field ) ), 0, 8 ) );
 
     $new_coupon = array(
       'post_title'   => $coupon_code,
       'post_content' => '',
       'post_status'  => 'publish',
-      'post_author'  => 1,
+      'post_author'  => $coupon_author_id,
       'post_type'    => 'shop_coupon'
     );
 
