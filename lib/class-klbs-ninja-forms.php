@@ -74,6 +74,23 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
     // UPDATE COUPON META
     update_post_meta( $coupon_id, 'user_email_id', $email );
 
+    // SEND EMAIL TO THE USER WITH COUPON CODE
+    $this->sendEmail( $email, $coupon_code );
+
+  }
+
+  function sendEmail( $to_mail, $coupon_code ){
+    ob_start();
+    include("templates/coupon-email.php");
+    $body = ob_get_clean();
+    $site_name = get_bloginfo( 'name' );
+    $subject = "Coupon Notification From " . $site_name;
+    $header = array(
+      'Content-Type: text/html; charset=UTF-8'
+    );
+
+    wp_mail( $to_mail, $subject, $body, $header );
+
   }
 
 }
