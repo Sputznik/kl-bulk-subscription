@@ -56,6 +56,8 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
 
     global $kl_customize;
 
+    $product_ids = $kl_customize->get_theme_option('klbs', 'product_ids', 0 );
+
   	$coupon_author_id = (int) $kl_customize->get_theme_option('klbs', 'coupon_author_id', 0 );
 
     $coupon_code = strtoupper( substr( md5( uniqid( $email_field ) ), 0, 8 ) );
@@ -72,7 +74,19 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
     $coupon_id = wp_insert_post( $new_coupon );
 
     // UPDATE COUPON META
-    update_post_meta( $coupon_id, 'user_email_id', $email );
+    $coupon_meta = array(
+      'product_ids'           => $product_ids, // Products that the coupon will be applied to.
+      'discount_type'         => 'percent',
+      'coupon_amount'         => '100',
+      'user_email_id'         => $email,
+      'usage_limit'           => '1', // How many times this coupon can be used before it is void.
+      'usage_limit_per_user'  => '1' // How many times this coupon can be used by a user.
+    );
+
+    // INSERT ALL THE REQUIRED META
+    foreach ( $coupon_meta as $meta => $value) {
+      update_post_meta( $coupon_id, $meta, $value );
+    }
 
     // SEND EMAIL TO THE USER WITH COUPON CODE
     $this->sendEmail( $email, $coupon_code );
