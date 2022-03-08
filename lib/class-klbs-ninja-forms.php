@@ -51,6 +51,13 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
     return  array_pop( explode( '@', $email ) );
   }
 
+  // RETURNS UNIQUE COUPON CODE
+  function getUniqueCoupon( $email ){
+    $domain = substr( $this->getEmailDomain( $email ), 0, 3 );
+    $email_hash = substr( md5( uniqid( $email_field ) ), 0, 5 );
+    return strtoupper( $domain.$email_hash );
+  }
+
   // CREATE A NEW WOOCOMMERCE COUPON
   function generateCoupon( $email ){
 
@@ -58,9 +65,11 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
 
     $product_ids = $kl_customize->get_theme_option('klbs', 'product_ids', 0 );
 
+    $product_variant_id = $kl_customize->get_theme_option('klbs', 'product_variant_id', 0 );
+
   	$coupon_author_id = (int) $kl_customize->get_theme_option('klbs', 'coupon_author_id', 0 );
 
-    $coupon_code = strtoupper( substr( md5( uniqid( $email_field ) ), 0, 8 ) );
+    $coupon_code = $this->getUniqueCoupon( $email );
 
     $new_coupon = array(
       'post_title'   => $coupon_code,
@@ -88,13 +97,14 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
       update_post_meta( $coupon_id, $meta, $value );
     }
 
-    // SEND EMAIL TO THE USER WITH COUPON CODE
-    $this->sendEmail( $email, $coupon_code );
+    // SEND EMAIL TO THE USER WITH COUPON CODE AND CHECKOUT URL
+    $this->sendEmail( $email, $coupon_code, $product_ids ,$product_variant_id );
 
   }
 
-  function sendEmail( $to_mail, $coupon_code ){
+  function sendEmail( $to_mail, $coupon_code, $product_id, $product_variant_id ){
     ob_start();
+    $checkout_url = wc_get_checkout_url()."?add-to-cart=$product_id&variation_id=$product_variant_id";
     include("templates/coupon-email.php");
     $body = ob_get_clean();
     $site_name = get_bloginfo( 'name' );

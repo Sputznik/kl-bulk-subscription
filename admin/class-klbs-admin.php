@@ -29,6 +29,9 @@ class KLBS_ADMIN extends KLBS_BASE{
 			/* Products Ids that the coupon will be applied to. */
 			$kl_customize->text( $wp_customize, 'klbs_settings', '[klbs][product_ids]', 'Product Ids', '' );
 
+			/* Product Variant ID */
+			$kl_customize->text( $wp_customize, 'klbs_settings', '[klbs][product_variant_id]', 'Product Variant ID', '' );
+
 			/* Allowed Email Domains */
 			$kl_customize->textarea( $wp_customize, 'klbs_settings', '[klbs][allowed_email_domains]', 'Allowed Email Domains', '' );
 
