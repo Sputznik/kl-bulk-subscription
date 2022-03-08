@@ -26,8 +26,8 @@ class KLBS_ADMIN extends KLBS_BASE{
 			/* Woocommerce coupon author id */
 			$kl_customize->text( $wp_customize, 'klbs_settings', '[klbs][coupon_author_id]', 'Coupon Author ID', '' );
 
-			/* Products Ids that the coupon will be applied to. */
-			$kl_customize->text( $wp_customize, 'klbs_settings', '[klbs][product_ids]', 'Product Ids', '' );
+			/* Product ID that the coupon will be applied to. */
+			$kl_customize->text( $wp_customize, 'klbs_settings', '[klbs][product_id]', 'Product ID', '' );
 
 			/* Product Variant ID */
 			$kl_customize->text( $wp_customize, 'klbs_settings', '[klbs][product_variant_id]', 'Product Variant ID', '' );

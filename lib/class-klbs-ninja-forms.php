@@ -63,7 +63,7 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
 
     global $kl_customize;
 
-    $product_ids = $kl_customize->get_theme_option('klbs', 'product_ids', 0 );
+    $product_id = $kl_customize->get_theme_option('klbs', 'product_id', 0 );
 
     $product_variant_id = $kl_customize->get_theme_option('klbs', 'product_variant_id', 0 );
 
@@ -84,7 +84,7 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
 
     // UPDATE COUPON META
     $coupon_meta = array(
-      'product_ids'           => $product_ids, // Products that the coupon will be applied to.
+      'product_ids'           => $product_id, // Products that the coupon will be applied to.
       'discount_type'         => 'percent',
       'coupon_amount'         => '100',
       'user_email_id'         => $email,
@@ -98,7 +98,7 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
     }
 
     // SEND EMAIL TO THE USER WITH COUPON CODE AND CHECKOUT URL
-    $this->sendEmail( $email, $coupon_code, $product_ids ,$product_variant_id );
+    $this->sendEmail( $email, $coupon_code, $product_id ,$product_variant_id );
 
   }
 
