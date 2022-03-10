@@ -89,6 +89,7 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
         'product_ids'           => $product_id, // Products that the coupon will be applied to.
         'discount_type'         => 'percent',
         'coupon_amount'         => '100',
+        'date_expires'          => strtotime("+3 days"), // Coupon expiry date
         'user_email_id'         => $email,
         'customer_email'        => $email, // Allowed email
         'usage_limit'           => '1', // How many times this coupon can be used before it is void.
