@@ -80,25 +80,30 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
     );
 
     // INSERT THE COUPON
-    $coupon_id = wp_insert_post( $new_coupon );
+    $coupon_id = wp_insert_post( $new_coupon, true );
 
-    // UPDATE COUPON META
-    $coupon_meta = array(
-      'product_ids'           => $product_id, // Products that the coupon will be applied to.
-      'discount_type'         => 'percent',
-      'coupon_amount'         => '100',
-      'user_email_id'         => $email,
-      'usage_limit'           => '1', // How many times this coupon can be used before it is void.
-      'usage_limit_per_user'  => '1' // How many times this coupon can be used by a user.
-    );
+    if( !is_wp_error( $coupon_id ) ){
 
-    // INSERT ALL THE REQUIRED META
-    foreach ( $coupon_meta as $meta => $value) {
-      update_post_meta( $coupon_id, $meta, $value );
+      // UPDATE COUPON META
+      $coupon_meta = array(
+        'product_ids'           => $product_id, // Products that the coupon will be applied to.
+        'discount_type'         => 'percent',
+        'coupon_amount'         => '100',
+        'user_email_id'         => $email,
+        'customer_email'        => $email, // Allowed email
+        'usage_limit'           => '1', // How many times this coupon can be used before it is void.
+        'usage_limit_per_user'  => '1' // How many times this coupon can be used by a user.
+      );
+
+      // INSERT ALL THE REQUIRED META
+      foreach ( $coupon_meta as $meta => $value) {
+        update_post_meta( $coupon_id, $meta, $value );
+      }
+
+      // SEND EMAIL TO THE USER WITH COUPON CODE AND CHECKOUT URL
+      $this->sendEmail( $email, $coupon_code, $product_id ,$product_variant_id );
+
     }
-
-    // SEND EMAIL TO THE USER WITH COUPON CODE AND CHECKOUT URL
-    $this->sendEmail( $email, $coupon_code, $product_id ,$product_variant_id );
 
   }
 
