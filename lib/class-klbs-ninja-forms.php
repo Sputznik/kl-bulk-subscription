@@ -23,7 +23,7 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
 
       //  THROW ERROR IF THE EMAIL ADDRESS DOES NOT MATCH ANY OF THE ALLOWED EMAIL DOMAINS
       if( !$this->validateEmailDomain( $email_field ) ){
-        $form_data['errors']['fields'][$field_id] = 'Email domain <strong>'.$this->getEmailDomain( $email_field ).'</strong> is not valid';
+        $form_data['errors']['fields'][$field_id] = 'Email domain <strong>'.$this->getEmailDomain( $email_field ).'</strong> is not allowed';
       } else{
         $this->generateCoupon( $email_field );
       }
