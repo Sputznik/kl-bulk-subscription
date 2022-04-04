@@ -114,7 +114,7 @@ class KLBS_NINJA_FORMS extends KLBS_BASE{
     include("templates/coupon-email.php");
     $body = ob_get_clean();
     $site_name = get_bloginfo( 'name' );
-    $subject = "Coupon Notification From " . $site_name;
+    $subject = "Your KL Hatke Subscription - " . $site_name;
     $header = array(
       'Content-Type: text/html; charset=UTF-8'
     );
